@@ -5,10 +5,8 @@ import java.util.List;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import it.lutech.model.entity.Person;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.transaction.Transactional;
 
 @ApplicationScoped
-@Transactional
 public class PersonRepository implements PanacheRepository<Person> {
 
     public Person findByName(String name){

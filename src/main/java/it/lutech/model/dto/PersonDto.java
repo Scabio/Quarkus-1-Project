@@ -1,6 +1,6 @@
 package it.lutech.model.dto;
 
-
+import java.time.LocalDate;
 import java.util.Date;
 
 import io.smallrye.common.constraint.Nullable;
