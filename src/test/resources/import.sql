@@ -1,0 +1,1 @@
+INSERT INTO PERSON (id, alive, birthday, name) VALUES (1, true, '2000-01-01', 'Pippo');
