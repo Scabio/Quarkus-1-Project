@@ -1,22 +1,23 @@
 package it.lutech.test;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TestCasesProperties {
-    TestCase defaultValues();
+    Optional<TestCase> defaultValues();
     List<TestCase> cases();
 
     interface TestCase {
         String name();
-        String type();
-        String url();
-        String query();
-        String body();
-        String headers();
-        String contentType();
-        Integer expectedStatus();
-        String expectedContentType();
-        String expectedBody();
-        String expectedHeaders();
+        Optional<String> type();
+        Optional<String> url();
+        Optional<String> query();
+        Optional<String> body();
+        Optional<String> headers();
+        Optional<String> contentType();
+        Optional<Integer> expectedStatus();
+        Optional<String> expectedContentType();
+        Optional<String> expectedBody();
+        Optional<String> expectedHeaders();
     }
 }

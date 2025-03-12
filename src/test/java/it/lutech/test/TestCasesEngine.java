@@ -4,6 +4,7 @@ import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -23,22 +24,25 @@ public abstract class TestCasesEngine {
             System.out.println("************ " + testCase.name()+" ************");
 
             // Estrazione e parsing degli header
-            Map<String, String> headers = toMap(testCase.headers());
+            Map<String, String> headers = toMap(testCase.headers().orElse(null));
 
             // Costruzione e invocazione della richiesta
             ValidatableResponse response = given()
                     .headers(headers)
-                    .contentType(testCase.contentType())
-                    .queryParams(toMap(testCase.query()))
+                    .contentType(testCase.contentType().orElse(null))
+                    .queryParams(toMap(testCase.query().orElse(null)))
                     .body(testCase.body())
                     .when()
-                    .request(testCase.type(), testCase.url())
-                    .then()
-                    .statusCode(testCase.expectedStatus())
-                    .contentType(testCase.expectedContentType());
+                    .request(testCase.type().orElse(null), testCase.url().orElse(null))
+                    .then();
 
-            // Se c'è un expectedBody, confrontiamo anche il body della risposta
-            if (!testCase.expectedBody().isEmpty()) {
+            if (testCase.expectedStatus().isPresent()) {
+                response.statusCode(equalTo(testCase.expectedStatus()));
+            }
+            if (testCase.expectedContentType().isPresent()) {
+                response.contentType(equalTo(testCase.expectedContentType()));
+            }
+            if (testCase.expectedBody().isPresent()) {
                 response.body(equalTo(testCase.expectedBody()));
             }
         }
@@ -46,6 +50,7 @@ public abstract class TestCasesEngine {
 
     // Metodo per trasformare la query string in una mappa
     private Map<String, String> toMap(String query) {
+        if (query==null) return new HashMap<>();
         return Arrays.stream(query.split("&"))
                 .map(p -> p.split("="))
                 .collect(Collectors.toMap(p -> p[0], p -> p[1]));
