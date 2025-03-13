@@ -4,6 +4,6 @@ import it.lutech.common.test.TestCustomProfile;
 
 public class PersonControllerProfile extends TestCustomProfile {
     public PersonControllerProfile() {
-        super("test", "yml");
+        super("test", "application-test.yaml", Type.YAML);
     }
 }

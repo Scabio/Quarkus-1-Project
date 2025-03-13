@@ -1,0 +1,28 @@
+constant:
+    mock-database:
+      - type: database
+        json-config: '{"name":"uno.uno"}'
+      - type: database
+        json-config: '{"name":"uno.due"}'
+    mock-rest:
+        type: restclient
+        json-config: '{"name":"due"}'
+
+person-tests:
+    cases:
+    -   name: findByName2
+        mocks:
+            - ${constant.mock-database[0]}
+            - ${constant.mock-rest}
+        type: GET
+        url: /person/find
+        query: name=Pippo
+        expected-body: '{"id":1,"name":"Pippo","birthday":"1999-12-31T23:00:00.000+00:00","alive":true}'
+        expected-status: 200
+    -   name: findByName3
+        mocks: ${constant.mock-database}
+        type: GET
+        url: /person/find
+        query: name=Pippo
+        expected-body: '{"id":1,"name":"Pippo","birthday":"1999-12-31T23:00:00.000+00:00","alive":true}'
+        expected-status: 200
